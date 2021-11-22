@@ -6,6 +6,11 @@ import database from '../database/database.js';
 const router = express.Router();
 
 const getGames = async (req, res) => {
+  if (!req.cookies.loggedIn) {
+    res.status(403).redirect('/login');
+    return;
+  }
+
   const today = moment().tz('Asia/Singapore').subtract(15, 'h').format('YYYY-MM-DD');
 
   axios
