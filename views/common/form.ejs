@@ -1,0 +1,26 @@
+<div class="text-center">
+  <label for="games">Games:</label><br />
+  <% games.forEach((game, index) => { %>
+  <div class="mb-3">
+    <label>
+      <input
+        type="radio"
+        name="<%= game.id %>"
+        value="<%= game.home_team_id %>"
+        required
+      />
+      <%= game.home_team %>
+    </label>
+    <label>
+      <input
+        type="radio"
+        name="<%= game.id %>"
+        value="<%= game.away_team_id %>"
+      />
+      <%= game.away_team %>
+    </label>
+    <br />
+  </div>
+  <% }) %>
+  <input type="submit" value="Submit" />
+</div>

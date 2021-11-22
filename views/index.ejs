@@ -13,23 +13,38 @@
   </head>
   <body class="text-center bg-dark text-light">
     <%- include('common/nav') %>
-    <div class="px-md-5 d-flex flex-wrap" style="margin-top: 70px">
-      <% games.forEach((game) => { %>
-      <div class="card w-50 mb-4 bg-secondary">
-        <h5 class="card-header">Game</h5>
-        <div class="card-body">
-          <p class="card-text">
-            <%= `${game.home_team.full_name} ${game.home_team_score}` %>
-          </p>
-          <p class="card-text">
-            <%= `${game.visitor_team.full_name} ${game.visitor_team_score}` %>
-          </p>
-          <p class="card-text fw-bold">
-            <%= game.period === 0 ? 'NOT STARTED' : game.status === 'Final' ?
-            'FINAL' : `Q${game.period} ${game.time}` %>
-          </p>
+    <div
+      class="px-md-5 d-flex align-items-baseline justify-content-center"
+      style="margin-top: 70px"
+    >
+      <span class="me-2"><%= date %></span>
+      <form action="/prediction">
+        <input
+          type="submit"
+          value="Make Prediction"
+          class="btn btn-warning btn-sm text-light"
+        />
+      </form>
+    </div>
+    <div class="px-md-5 d-flex flex-wrap">
+      <% games.forEach((game, index) => { %>
+      <a href="#" class="w-50 mb-4 text-light" style="text-decoration: none">
+        <div class="card bg-secondary">
+          <h5 class="card-header"><%= `Game ${index + 1}` %></h5>
+          <div class="card-body">
+            <p class="card-text">
+              <%= `${game.home_team.full_name} ${game.home_team_score}` %>
+            </p>
+            <p class="card-text">
+              <%= `${game.visitor_team.full_name} ${game.visitor_team_score}` %>
+            </p>
+            <p class="card-text fw-bold">
+              <%= game.period === 0 ? 'NOT STARTED' : game.status === 'Final' ?
+              'FINAL' : `Q${game.period} ${game.time}` %>
+            </p>
+          </div>
         </div>
-      </div>
+      </a>
       <% }) %>
     </div>
 
