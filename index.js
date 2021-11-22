@@ -6,6 +6,7 @@ import loginRouter from './routers/loginRouter.js';
 import signupRouter from './routers/signupRouter.js';
 import logoutRouter from './routers/logoutRouter.js';
 import predictionRouter from './routers/predictionRouter.js';
+import scheduler from './utils/schedule.js';
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -19,4 +20,7 @@ app.use('/signup', signupRouter);
 app.use('/logout', logoutRouter);
 app.use('/prediction', predictionRouter);
 
-app.listen(3004, () => console.log('App listening on port 3004'));
+app.listen(3004, () => {
+  console.log('App listening on port 3004');
+  scheduler.scheduleJob();
+});

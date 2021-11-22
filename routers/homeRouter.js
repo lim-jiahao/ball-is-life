@@ -1,7 +1,6 @@
 import express from 'express';
 import axios from 'axios';
 import moment from 'moment-timezone';
-import database from '../database/database.js';
 
 const router = express.Router();
 
