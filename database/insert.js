@@ -1,9 +1,9 @@
 import axios from 'axios';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import database from './database.js';
 
 const insertIntoGames = (gamesData) => {
-  const sqlQuery = 'INSERT INTO games (id, home_team_id, away_team_id, date_col, home_team_score, away_team_score, quarter, game_time, is_game_over, winner_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
+  const sqlQuery = 'INSERT INTO games (id, home_team_id, away_team_id, date_col, home_team_score, away_team_score, winner_id) VALUES ($1, $2, $3, $4, $5, $6, $7)';
 
   gamesData.forEach((game) => {
     const gameOver = game.status === 'Final';
@@ -21,9 +21,6 @@ const insertIntoGames = (gamesData) => {
       game.date,
       game.home_team_score,
       game.visitor_team_score,
-      game.period,
-      game.time,
-      gameOver,
       winnerID,
     ];
 
