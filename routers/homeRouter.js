@@ -16,7 +16,7 @@ const getGames = (req, res) => {
 
   axios
     .get(`https://www.balldontlie.io/api/v1/games?start_date=${todayDate}&end_date=${todayDate}`)
-    .then((resp) => { res.render('index', { date: todayFormatted, games: resp.data.data }); })
+    .then((resp) => { res.render('index', { date: todayFormatted, games: resp.data.data, userName: req.cookies.userName }); })
     .catch((err) => { res.status(500).send(err); });
 };
 
