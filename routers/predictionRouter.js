@@ -11,6 +11,10 @@ const getNewPredictionForm = (req, res) => {
   }
 
   const today = moment().tz('Asia/Singapore').subtract(15, 'h');
+  if (today.hour() >= 9) {
+    res.render('prediction-fail');
+    return;
+  }
   const todayDate = today.format('YYYY-MM-DD');
   const todayFormatted = today.format('dddd, MMMM Do, YYYY');
 
@@ -29,8 +33,15 @@ const addNewPrediction = (req, res) => {
     return;
   }
 
-  const predictions = req.body;
   const today = moment().tz('Asia/Singapore').subtract(15, 'h');
+  const todayDate = today.format('YYYY-MM-DD');
+
+  if (today.hour() >= 9) {
+    res.render('prediction-fail');
+    return;
+  }
+
+  const predictions = req.body;
   const insertPredictionQuery = 'INSERT INTO predictions (user_id, date_col) VALUES ((SELECT id FROM users WHERE username = $1), $2) RETURNING *';
   let insertDetailsQuery = 'INSERT INTO prediction_details (prediction_id, game_id, pick_id) VALUES ';
   Object.keys(predictions).forEach((gameID, index) => {
@@ -41,7 +52,7 @@ const addNewPrediction = (req, res) => {
   });
 
   database
-    .query(insertPredictionQuery, [req.cookies.userName, today])
+    .query(insertPredictionQuery, [req.cookies.userName, todayDate])
     .then((result) => {
       const predictionID = result.rows[0].id;
       return database.query(insertDetailsQuery, [predictionID]);

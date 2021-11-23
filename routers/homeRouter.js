@@ -13,10 +13,18 @@ const getGames = (req, res) => {
   const today = moment().tz('Asia/Singapore').subtract(15, 'h');
   const todayDate = today.format('YYYY-MM-DD');
   const todayFormatted = today.format('dddd, MMMM Do, YYYY');
+  const hidePredictionButton = today.hour() >= 9;
 
   axios
     .get(`https://www.balldontlie.io/api/v1/games?start_date=${todayDate}&end_date=${todayDate}`)
-    .then((resp) => { res.render('index', { date: todayFormatted, games: resp.data.data, userName: req.cookies.userName }); })
+    .then((resp) => {
+      res.render('index', {
+        date: todayFormatted,
+        games: resp.data.data,
+        userName: req.cookies.userName,
+        hidePredictionButton,
+      });
+    })
     .catch((err) => { res.status(500).send(err); });
 };
 

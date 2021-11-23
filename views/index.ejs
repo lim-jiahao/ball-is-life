@@ -18,6 +18,7 @@
       style="margin-top: 70px"
     >
       <span class="me-2"><%= date %></span>
+      <% if (!hidePredictionButton) { %>
       <form action="/prediction">
         <input
           type="submit"
@@ -25,10 +26,15 @@
           class="btn btn-warning btn-sm text-light"
         />
       </form>
+      <% } %>
     </div>
-    <div class="px-md-5 d-flex flex-wrap">
+    <div class="px-md-5 row mx-0">
       <% games.forEach((game, index) => { %>
-      <a href="#" class="w-50 mb-4 text-light" style="text-decoration: none">
+      <a
+        href="/game/<%= game.id %>"
+        class="col-4 mb-4 text-light"
+        style="text-decoration: none"
+      >
         <div class="card bg-secondary">
           <h5 class="card-header"><%= `Game ${index + 1}` %></h5>
           <div class="card-body">
@@ -38,10 +44,10 @@
             <p class="card-text">
               <%= `${game.visitor_team.full_name} ${game.visitor_team_score}` %>
             </p>
-            <p class="card-text fw-bold">
-              <%= game.period === 0 ? 'NOT STARTED' : game.status === 'Final' ?
-              'FINAL' : `Q${game.period} ${game.time}` %>
-            </p>
+            <span class="card-text fw-bold"
+              ><%= game.status.toUpperCase() %></span
+            >
+            <span class="card-text fw-bold"><%= game.time %></span>
           </div>
         </div>
       </a>
