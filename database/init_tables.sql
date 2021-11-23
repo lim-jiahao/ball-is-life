@@ -38,3 +38,11 @@ CREATE TABLE IF NOT EXISTS prediction_details (
   pick_id INTEGER REFERENCES teams(id),
   is_correct INTEGER NOT NULL DEFAULT -1
 );
+
+CREATE TABLE IF NOT EXISTS comments (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
+  game_id INTEGER REFERENCES games(id),
+  comment TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL
+)
