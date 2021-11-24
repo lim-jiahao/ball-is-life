@@ -14,8 +14,15 @@
   <body class="text-center bg-dark text-light">
     <%- include('common/nav', { page: '/' }) %>
     <div
-      class="px-md-5 d-flex align-items-baseline justify-content-center"
+      class="px-md-5 mb-4"
       style="margin-top: 70px"
+    >
+      <i>When I find myself in times of trouble, Mother Mary comes to me
+      <br>
+      Speaking words of wisdom: "<strong>Ball is life</strong>"</i>
+    </div>
+    <div
+      class="px-md-5 d-flex align-items-baseline justify-content-center"
     >
       <span class="me-2"><%= date %></span>
       <% if (!hidePredictionButton) { %>
@@ -35,7 +42,7 @@
         class="col-4 mb-4 text-light"
         style="text-decoration: none"
       >
-        <div class="card bg-secondary">
+        <div class="card bg-secondary <%= game.time ? "bg-success" : "" %>">
           <h5 class="card-header"><%= `Game ${index + 1}` %></h5>
           <div class="card-body">
             <p class="card-text">
