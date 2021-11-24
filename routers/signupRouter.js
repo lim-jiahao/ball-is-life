@@ -24,6 +24,7 @@ const createNewUser = (req, res) => {
     .query(sqlQuery, args)
     .then((result) => {
       res.cookie('userName', result.rows[0].username);
+      res.cookie('userID', result.rows[0].id);
       res.cookie('loggedIn', true);
       res.redirect('/');
     })

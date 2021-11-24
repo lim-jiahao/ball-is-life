@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS users (
   username TEXT NOT NULL UNIQUE,
   email TEXT NOT NULL UNIQUE,
   password TEXT NOT NULL,
+  bio TEXT,
   team_id INTEGER REFERENCES teams(id),
   correct_guesses INTEGER DEFAULT 0,
   total_guesses INTEGER DEFAULT 0,

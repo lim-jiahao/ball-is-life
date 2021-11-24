@@ -21,7 +21,7 @@ const getGames = (req, res) => {
       res.render('index', {
         date: todayFormatted,
         games: resp.data.data,
-        userName: req.cookies.userName,
+        user: req.cookies,
         hidePredictionButton,
       });
     })

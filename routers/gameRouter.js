@@ -19,7 +19,7 @@ const getGameById = (req, res) => {
       const commentQuery = 'SELECT c.*, u.username FROM comments AS c INNER JOIN users AS u on c.user_id = u.id WHERE c.game_id = $1 ORDER BY c.id';
       return database.query(commentQuery, [id]);
     })
-    .then((result) => { res.render('game', { game, comments: result.rows, userName: req.cookies.userName }); })
+    .then((result) => { res.render('game', { game, comments: result.rows, user: req.cookies }); })
     .catch((err) => { res.status(500).send(err); });
 };
 

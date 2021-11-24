@@ -23,7 +23,7 @@ const getNewPredictionForm = (req, res) => {
   database
     .query(selectQuery, [todayDate])
     .then((result) => {
-      res.render('new-prediction', { date: todayFormatted, games: result.rows, userName: req.cookies.userName });
+      res.render('new-prediction', { date: todayFormatted, games: result.rows, user: req.cookies });
     });
 };
 

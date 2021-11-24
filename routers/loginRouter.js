@@ -26,6 +26,7 @@ const authUser = (req, res) => {
 
       if (user.password === hashedPassword) {
         res.cookie('userName', user.username);
+        res.cookie('userID', result.rows[0].id);
         res.cookie('loggedIn', true);
         res.redirect('/');
       } else {
