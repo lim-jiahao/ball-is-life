@@ -1,6 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import methodOverride from 'method-override';
+import dotenv from 'dotenv';
 import homeRouter from './routers/homeRouter.js';
 import loginRouter from './routers/loginRouter.js';
 import signupRouter from './routers/signupRouter.js';
@@ -10,6 +11,9 @@ import leaderboardRouter from './routers/leaderboardRouter.js';
 import gameRouter from './routers/gameRouter.js';
 import userRouter from './routers/userRouter.js';
 import scheduler from './utils/schedule.js';
+
+dotenv.config();
+const PORT = process.env.PORT ?? 3004;
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -26,7 +30,7 @@ app.use('/leaderboard', leaderboardRouter);
 app.use('/game', gameRouter);
 app.use('/user', userRouter);
 
-app.listen(3004, () => {
-  console.log('App listening on port 3004');
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
   scheduler.scheduleJob();
 });

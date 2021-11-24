@@ -1,10 +1,12 @@
 import express from 'express';
 import database from '../database/database.js';
+import checkAuth from '../middleware/auth.js';
 
 const router = express.Router();
+router.use(checkAuth);
 
 const getLeaderboard = (req, res) => {
-  if (!req.cookies.loggedIn) {
+  if (!req.isLoggedIn) {
     res.status(403).redirect('/login');
     return;
   }

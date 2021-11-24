@@ -1,6 +1,6 @@
 import express from 'express';
-import JSSHA from 'jssha';
 import database from '../database/database.js';
+import { getUserIdHash, getPasswordHash } from '../utils/hash.js';
 
 const router = express.Router();
 
@@ -10,9 +10,7 @@ const getSignupPage = (req, res) => {
 };
 
 const createNewUser = (req, res) => {
-  const shaObj = new JSSHA('SHA-512', 'TEXT', { encoding: 'UTF8' });
-  shaObj.update(req.body.password);
-  const hashedPassword = shaObj.getHash('HEX');
+  const hashedPassword = getPasswordHash(req.body.password);
 
   const args = Object.values(req.body);
   args.pop();
@@ -23,9 +21,11 @@ const createNewUser = (req, res) => {
   database
     .query(sqlQuery, args)
     .then((result) => {
-      res.cookie('userName', result.rows[0].username);
-      res.cookie('userID', result.rows[0].id);
-      res.cookie('loggedIn', true);
+      const user = result.rows[0];
+      const hash = getUserIdHash(user.id);
+      res.cookie('userName', user.username);
+      res.cookie('userID', user.id);
+      res.cookie('loggedIn', hash);
       res.redirect('/');
     })
     .catch((err) => {

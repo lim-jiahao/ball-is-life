@@ -1,11 +1,13 @@
 import express from 'express';
 import axios from 'axios';
 import moment from 'moment-timezone';
+import checkAuth from '../middleware/auth.js';
 
 const router = express.Router();
+router.use(checkAuth);
 
 const getGames = (req, res) => {
-  if (!req.cookies.loggedIn) {
+  if (!req.isLoggedIn) {
     res.status(403).redirect('/login');
     return;
   }
