@@ -13,19 +13,16 @@
   </head>
   <body class="text-center bg-dark text-light">
     <%- include('common/nav', { page: '/' }) %>
-    <div
-      class="px-md-5 mb-4"
-      style="margin-top: 70px"
-    >
-      <i>When I find myself in times of trouble, Mother Mary comes to me
-      <br>
-      Speaking words of wisdom: "<strong>Ball is life</strong>"</i>
+    <div class="px-md-5 mb-4" style="margin-top: 70px">
+      <i
+        >When I find myself in times of trouble, Mother Mary comes to me
+        <br />
+        Speaking words of wisdom: "<strong>Ball is life</strong>"</i
+      >
     </div>
-    <div
-      class="px-md-5 d-flex align-items-baseline justify-content-center"
-    >
-      <span class="me-2"><%= date %></span>
-      <% if (!hidePredictionButton) { %>
+    <div class="px-md-5 d-flex align-items-baseline justify-content-center">
+      <span class="me-2 fw-bold"><%= date %></span>
+      <% if (!hidePredictionButton && games.length > 0) { %>
       <form action="/prediction">
         <input
           type="submit"
@@ -36,29 +33,33 @@
       <% } %>
     </div>
     <div class="px-md-5 row mx-0">
-      <% games.forEach((game, index) => { %>
-      <a
-        href="/game/<%= game.id %>"
-        class="col-4 mb-4 text-light"
-        style="text-decoration: none"
-      >
-        <div class="card bg-secondary <%= game.time ? "bg-success" : "" %>">
-          <h5 class="card-header"><%= `Game ${index + 1}` %></h5>
-          <div class="card-body">
-            <p class="card-text">
-              <%= `${game.home_team.full_name} ${game.home_team_score}` %>
-            </p>
-            <p class="card-text">
-              <%= `${game.visitor_team.full_name} ${game.visitor_team_score}` %>
-            </p>
-            <span class="card-text fw-bold"
-              ><%= game.status.toUpperCase() %></span
-            >
-            <span class="card-text fw-bold"><%= game.time %></span>
+      <% if (games.length > 0) { %> 
+        <% games.forEach((game, index) => { %>
+        <a
+          href="/game/<%= game.id %>"
+          class="col-4 mb-4 text-light"
+          style="text-decoration: none"
+        >
+          <div class="card bg-secondary <%= game.time ? "bg-success" : "" %>">
+            <h5 class="card-header"><%= `Game ${index + 1}` %></h5>
+            <div class="card-body">
+              <p class="card-text">
+                <%= `${game.home_team.full_name} ${game.home_team_score}` %>
+              </p>
+              <p class="card-text">
+                <%= `${game.visitor_team.full_name} ${game.visitor_team_score}` %>
+              </p>
+              <span class="card-text fw-bold"
+                ><%= game.status.toUpperCase() %></span
+              >
+              <span class="card-text fw-bold"><%= game.time %></span>
+            </div>
           </div>
-        </div>
-      </a>
-      <% }) %>
+        </a>
+        <% }) %>
+      <% } else { %>
+        <p class="mt-4">No games today! Please check back again soon.</p>
+      <% } %>
     </div>
 
     <script
