@@ -47,8 +47,26 @@ const addComment = (req, res) => {
     .catch((err) => { res.status(500).send(err); });
 };
 
+const editComment = (req, res) => {
+  if (!req.isLoggedIn) {
+    res.status(403).redirect('/login');
+    return;
+  }
+
+  const { id, commentId } = req.params;
+  console.log(req.body);
+
+  const editQuery = 'UPDATE comments SET comment = $1 WHERE id = $2';
+  database
+    .query(editQuery, [req.body.comment, commentId])
+    .then((result) => { res.redirect(`/game/${id}`); })
+    .catch((err) => res.status(500).send(err));
+};
+
 router.get('/:id', getGameById);
 
 router.post('/:id/comment', addComment);
+
+router.put('/:id/comment/:commentId', editComment);
 
 export default router;
