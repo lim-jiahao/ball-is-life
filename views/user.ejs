@@ -21,9 +21,29 @@
     >
       <h5 class="card-header">🙍‍♂️ <%= userInfo.username %></h5>
       <div class="card-body">
-        <p class="card-text">
-          <strong>Bio:</strong> <%= userInfo.bio ?? 'No bio found' %>
-        </p>
+        <div
+          class="
+            card-text
+            d-flex
+            align-items-center
+            justify-content-center
+            mb-3
+          "
+        >
+          <span class="me-2"
+            ><strong>Bio:</strong> <%= userInfo.bio ?? 'No bio found' %></span
+          >
+          <% if (userInfo.username === user.userName) { %>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Edit
+          </button>
+          <% } %>
+        </div>
         <p class="card-text">
           <strong>Correct Guesses:</strong> <%= guesses.correct %>
         </p>
@@ -77,6 +97,46 @@
       <%= userInfo.username %> hasn't made any predictions yet...
     </h5>
     <% } %>
+
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-dark" id="exampleModalLabel">
+              Edit Bio
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form
+              action="/user/<%=userInfo.id %>/edit?_method=PUT"
+              method="POST"
+            >
+              <textarea
+                style="box-sizing: border-box; width: 100%"
+                rows="4"
+                name="bio"
+                required
+              >
+<%= userInfo.bio %></textarea
+              >
+              <input type="submit" value="Submit" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

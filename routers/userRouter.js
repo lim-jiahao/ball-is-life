@@ -14,7 +14,7 @@ const getUserById = (req, res) => {
   const { id } = req.params;
   let userInfo;
   let gamesInfo;
-  const userQuery = 'SELECT username, bio FROM users WHERE id = $1';
+  const userQuery = 'SELECT id, username, bio FROM users WHERE id = $1';
   const predictionQuery = 'SELECT pd.pick_id, pd.is_correct, g.*, ht.name AS home_team, at.name AS away_team FROM predictions p INNER JOIN prediction_details pd ON p.id = pd.prediction_id INNER JOIN games g ON pd.game_id = g.id INNER JOIN teams ht ON ht.id = g.home_team_id INNER JOIN teams at ON at.id = g.away_team_id WHERE p.user_id = $1 AND is_correct != -1';
   const aggregateQuery = 'SELECT p.id, p.date_col, SUM(is_correct) AS correct_guesses, COUNT(*) AS total_guesses FROM prediction_details AS pd INNER JOIN predictions AS p ON pd.prediction_id = p.id WHERE is_correct != -1 AND p.user_id = $1 GROUP BY p.id ORDER BY p.date_col DESC';
 
@@ -43,6 +43,22 @@ const getUserById = (req, res) => {
     .catch((err) => { res.status(500).send(err); });
 };
 
+const editUserBio = (req, res) => {
+  if (!req.isLoggedIn) {
+    res.status(403).redirect('/login');
+    return;
+  }
+
+  const { id } = req.params;
+
+  const editQuery = 'UPDATE users SET bio = $1 WHERE id = $2';
+  database
+    .query(editQuery, [req.body.bio, id])
+    .then((result) => { res.redirect(`/user/${id}`); })
+    .catch((err) => res.status(500).send(err));
+};
+
 router.get('/:id', getUserById);
+router.put('/:id/edit', editUserBio);
 
 export default router;
