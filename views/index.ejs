@@ -23,13 +23,13 @@
     <div class="px-md-5 d-flex align-items-baseline justify-content-center">
       <span class="me-2 fw-bold"><%= date %></span>
       <% if (!hidePredictionButton && games.length > 0) { %>
-      <form action="/prediction">
-        <input
-          type="submit"
-          value="Make Prediction"
-          class="btn btn-warning btn-sm text-light"
-        />
-      </form>
+        <form action="/prediction">
+          <input
+            type="submit"
+            value="<%= userPredictions.length === 0 ? 'Make Prediction' : 'Edit Prediction' %>"
+            class="btn btn-primary btn-sm"
+          />
+        </form>
       <% } %>
     </div>
     <div class="px-md-5 row mx-0">

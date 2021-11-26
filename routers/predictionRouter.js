@@ -6,7 +6,7 @@ import checkAuth from '../middleware/auth.js';
 const router = express.Router();
 router.use(checkAuth);
 
-const getNewPredictionForm = (req, res) => {
+const getPredictionForm = (req, res) => {
   if (!req.isLoggedIn) {
     res.status(403).redirect('/login');
     return;
@@ -19,13 +19,21 @@ const getNewPredictionForm = (req, res) => {
   }
   const todayDate = today.format('YYYY-MM-DD');
   const todayFormatted = today.format('dddd, MMMM Do, YYYY');
+  let games;
 
   const selectQuery = 'SELECT g.*, t1.name AS home_team, t2.name AS away_team FROM games AS g INNER JOIN teams as t1 ON g.home_team_id = t1.id INNER JOIN teams as t2 ON g.away_team_id = t2.id WHERE date_col = $1 ORDER BY id';
+  const userPredictionQuery = 'SELECT * FROM predictions p INNER JOIN prediction_details pd ON p.id = pd.prediction_id WHERE user_id = $1 AND date_col = $2';
 
   database
     .query(selectQuery, [todayDate])
     .then((result) => {
-      res.render('new-prediction', { date: todayFormatted, games: result.rows, user: req.cookies });
+      games = result.rows;
+      return database.query(userPredictionQuery, [req.cookies.userID, todayDate]);
+    })
+    .then((result) => {
+      res.render('new-prediction', {
+        date: todayFormatted, games, userPredictions: result.rows, user: req.cookies,
+      });
     });
 };
 
@@ -65,9 +73,44 @@ const addNewPrediction = (req, res) => {
     .catch((err) => res.status(500).send(err));
 };
 
+const editPrediction = (req, res) => {
+  if (!req.isLoggedIn) {
+    res.status(403).redirect('/login');
+    return;
+  }
+
+  const today = moment().tz('Asia/Singapore').subtract(15, 'h');
+  const todayDate = today.format('YYYY-MM-DD');
+
+  if (today.hour() >= 9) {
+    res.render('prediction-fail');
+    return;
+  }
+
+  const { id } = req.params;
+  const predictions = req.body;
+  let updateDetailsQuery = 'UPDATE prediction_details AS pd SET prediction_id = pd2.prediction_id, game_id = pd2.game_id, pick_id = pd2.pick_id FROM (VALUES ';
+  Object.keys(predictions).forEach((gameID, index) => {
+    updateDetailsQuery += `(${id}, ${gameID}, ${predictions[gameID]})`;
+    if (index !== Object.keys(predictions).length - 1) {
+      updateDetailsQuery += ', ';
+    } else updateDetailsQuery += ') ';
+  });
+  updateDetailsQuery += 'AS pd2(prediction_id, game_id, pick_id) WHERE pd.game_id = pd2.game_id AND pd.prediction_id = pd2.prediction_id';
+
+  database
+    .query(updateDetailsQuery)
+    .then((result) => {
+      res.redirect('/');
+    })
+    .catch((err) => res.status(500).send(err));
+};
+
 router
   .route('/')
-  .get(getNewPredictionForm)
+  .get(getPredictionForm)
   .post(addNewPrediction);
+
+router.put('/:id', editPrediction);
 
 export default router;

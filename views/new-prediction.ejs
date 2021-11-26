@@ -23,11 +23,20 @@
   >
     <%- include('common/nav') %>
     <div class="card bg-secondary mb-3" style="margin-top: 70px">
-      <h6 class="card-header"><%= `New Prediction - ${date}` %></h6>
+      <h6 class="card-header text-center"><%= date %></h6>
       <div class="card-body">
+        <% if (userPredictions.length === 0) { %>
         <form action="/prediction" method="POST">
           <%- include('common/form') %>
         </form>
+        <% } else { %>
+        <form
+          action="/prediction/<%= userPredictions[0].prediction_id %>?_method=PUT"
+          method="POST"
+        >
+          <%- include('common/form') %>
+        </form>
+        <% } %>
       </div>
     </div>
 

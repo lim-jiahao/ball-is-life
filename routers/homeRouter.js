@@ -2,6 +2,7 @@ import express from 'express';
 import axios from 'axios';
 import moment from 'moment-timezone';
 import checkAuth from '../middleware/auth.js';
+import database from '../database/database.js';
 
 const router = express.Router();
 router.use(checkAuth);
@@ -12,6 +13,7 @@ const getGames = (req, res) => {
     return;
   }
 
+  let games;
   const today = moment().tz('Asia/Singapore').subtract(15, 'h');
   const todayDate = today.format('YYYY-MM-DD');
   const todayFormatted = today.format('dddd, MMMM Do, YYYY');
@@ -20,9 +22,16 @@ const getGames = (req, res) => {
   axios
     .get(`https://www.balldontlie.io/api/v1/games?start_date=${todayDate}&end_date=${todayDate}`)
     .then((resp) => {
+      games = resp.data.data;
+      const userPredictionQuery = 'SELECT * FROM predictions WHERE user_id = $1 AND date_col = $2';
+
+      return database.query(userPredictionQuery, [req.cookies.userID, todayDate]);
+    })
+    .then((result) => {
       res.render('index', {
         date: todayFormatted,
-        games: resp.data.data,
+        games,
+        userPredictions: result.rows,
         user: req.cookies,
         hidePredictionButton,
       });
