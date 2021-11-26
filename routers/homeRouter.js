@@ -19,11 +19,23 @@ const getGames = (req, res) => {
   const todayFormatted = today.format('dddd, MMMM Do, YYYY');
   const hidePredictionButton = today.hour() >= 9;
 
+  let timeLeft;
+  let timeToNextPrediction;
+
   axios
     .get(`https://www.balldontlie.io/api/v1/games?start_date=${todayDate}&end_date=${todayDate}`)
     .then((resp) => {
       games = resp.data.data;
       const userPredictionQuery = 'SELECT * FROM predictions WHERE user_id = $1 AND date_col = $2';
+
+      if (!hidePredictionButton && games.length > 0) {
+        const mmt = moment().tz('Asia/Singapore');
+        const mmtMidnight = mmt.clone().endOf('day');
+        timeLeft = mmtMidnight.diff(mmt, 'seconds');
+      } else {
+        const nextPredictionOpen = today.clone().endOf('day');
+        timeToNextPrediction = nextPredictionOpen.diff(today, 'seconds');
+      }
 
       return database.query(userPredictionQuery, [req.cookies.userID, todayDate]);
     })
@@ -34,6 +46,8 @@ const getGames = (req, res) => {
         userPredictions: result.rows,
         user: req.cookies,
         hidePredictionButton,
+        timeLeft,
+        timeToNextPrediction,
       });
     })
     .catch((err) => { res.status(500).send(err); });

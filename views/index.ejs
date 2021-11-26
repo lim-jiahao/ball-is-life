@@ -32,6 +32,15 @@
         </form>
       <% } %>
     </div>
+
+    <% if (!hidePredictionButton && games.length > 0) { %>
+    <% const time = new Date(timeLeft * 1000).toISOString().substr(11, 8); %>
+    <p id="prediction-timer"><%= time %> left to make predictions</p>
+    <% } else { %>
+    <% const time = new Date(timeToNextPrediction * 1000).toISOString().substr(11, 8); %>
+    <p id="next-pred-timer">Enjoy the games :) Predictions for the next day will open in <%= time %></p>
+    <% } %>
+
     <div class="px-md-5 row mx-0">
       <% if (games.length > 0) { %> 
         <% games.forEach((game, index) => { %>
@@ -67,5 +76,41 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+
+    <script>
+      const timerElement1 = document.getElementById("prediction-timer");
+      const timerElement2 = document.getElementById("next-pred-timer");
+      if (timerElement1) {
+        let seconds = "<%= timeLeft %>";
+        seconds = Number(seconds);
+
+        const timer = setInterval(() => {
+          seconds -= 1;
+          if (seconds >= 0) {
+            const time = new Date(1000 * seconds).toISOString().substr(11, 8);
+            timerElement1.innerText = `${time} left to make predictions`;
+          }
+          if (seconds === -1) {
+            clearInterval(timer);
+            window.location.reload();
+          }
+        }, 1000);
+      } else {
+        let seconds = "<%= timeToNextPrediction %>";
+        seconds = Number(seconds);
+
+        const timer = setInterval(() => {
+          seconds -= 1;
+          if (seconds >= 0) {
+            const time = new Date(1000 * seconds).toISOString().substr(11, 8);
+            timerElement2.innerText = `Enjoy the games :) Predictions for the next day will open in ${time}`;
+          }
+          if (seconds === -1) {
+            clearInterval(timer);
+            window.location.reload();
+          }
+        }, 1000);
+      }
+    </script>
   </body>
 </html>
