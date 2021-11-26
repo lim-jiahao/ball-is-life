@@ -21,7 +21,7 @@
       >
     </div>
     <div class="px-md-5 d-flex align-items-baseline justify-content-center">
-      <span class="me-2 fw-bold"><%= date %></span>
+      <span class="me-2 fw-bold"><%= date[0] %></span>
       <% if (!hidePredictionButton && games.length > 0) { %>
         <form action="/prediction">
           <input
@@ -44,12 +44,12 @@
     <div class="px-md-5 row mx-0">
       <% if (games.length > 0) { %> 
         <% games.forEach((game, index) => { %>
-        <a
-          href="/game/<%= game.id %>"
-          class="col-4 mb-4 text-light"
-          style="text-decoration: none"
-        >
-          <div class="card bg-secondary <%= game.time ? "bg-success" : "" %>">
+        <div class="card g-0 col-4 mb-4 text-light bg-secondary <%= game.time ? "bg-success" : "" %>">
+          <a
+            href="/game/<%= game.id %>"
+            class="text-light"
+            style="text-decoration: none"
+          >
             <h5 class="card-header"><%= `Game ${index + 1}` %></h5>
             <div class="card-body">
               <p class="card-text">
@@ -63,8 +63,12 @@
               >
               <span class="card-text fw-bold"><%= game.time %></span>
             </div>
+          </a>
+          <div class="card-footer">
+            <% const ytLink = `https://www.youtube.com/results?search_query=${game.home_team.name}+${game.visitor_team.name}+${date[1]}`; %>
+            <a href="<%= ytLink %>" target="_blank" class="card-link text-info">Highlights</a>
           </div>
-        </a>
+        </div>
         <% }) %>
       <% } else { %>
         <p class="mt-4">No games today! Please check back again soon.</p>

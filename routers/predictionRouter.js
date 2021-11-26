@@ -80,7 +80,6 @@ const editPrediction = (req, res) => {
   }
 
   const today = moment().tz('Asia/Singapore').subtract(15, 'h');
-  const todayDate = today.format('YYYY-MM-DD');
 
   if (today.hour() >= 9) {
     res.render('prediction-fail');

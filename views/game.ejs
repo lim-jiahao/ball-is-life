@@ -27,8 +27,17 @@
         <p class="card-text">
           <%= `${game.visitor_team.full_name} ${game.visitor_team_score}` %>
         </p>
+        <p class="card-text fw-bold"><%= game.date %></p>
         <span class="card-text fw-bold"><%= game.status.toUpperCase() %></span>
         <span class="card-text fw-bold"><%= game.time %></span>
+      </div>
+      <div class="card-footer">
+        <% const ytLink =
+        `https://www.youtube.com/results?search_query=${game.home_team.name}+${game.visitor_team.name}+${date}`;
+        %>
+        <a href="<%= ytLink %>" target="_blank" class="card-link text-info"
+          >Highlights</a
+        >
       </div>
     </div>
     <% if (comments.length > 0) { %>

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import express from 'express';
+import moment from 'moment-timezone';
 import database from '../database/database.js';
 import checkAuth from '../middleware/auth.js';
 
@@ -14,14 +15,20 @@ const getGameById = (req, res) => {
 
   const { id } = req.params;
   let game;
+  let date;
   axios
     .get(`https://www.balldontlie.io/api/v1/games/${id}`)
     .then((resp) => {
       game = resp.data;
+      const gameDate = moment(new Date(game.date));
+      game.date = gameDate.format('dddd, MMMM Do, YYYY');
+      date = gameDate.format('MMMM Do YYYY');
       const commentQuery = 'SELECT c.*, u.username FROM comments AS c INNER JOIN users AS u on c.user_id = u.id WHERE c.game_id = $1 ORDER BY c.id';
       return database.query(commentQuery, [id]);
     })
-    .then((result) => { res.render('game', { game, comments: result.rows, user: req.cookies }); })
+    .then((result) => { res.render('game', {
+      game, date, comments: result.rows, user: req.cookies,
+    }); })
     .catch((err) => { res.status(500).send(err); });
 };
 

@@ -17,6 +17,7 @@ const getGames = (req, res) => {
   const today = moment().tz('Asia/Singapore').subtract(15, 'h');
   const todayDate = today.format('YYYY-MM-DD');
   const todayFormatted = today.format('dddd, MMMM Do, YYYY');
+  const todaySearch = today.format('MMMM Do YYYY');
   const hidePredictionButton = today.hour() >= 9;
 
   let timeLeft;
@@ -41,7 +42,7 @@ const getGames = (req, res) => {
     })
     .then((result) => {
       res.render('index', {
-        date: todayFormatted,
+        date: [todayFormatted, todaySearch],
         games,
         userPredictions: result.rows,
         user: req.cookies,
