@@ -15,5 +15,15 @@
     <br />
   </div>
   <% }) %>
-  <input type="submit" value="Submit" />
+  <input class="btn btn-primary btn-sm" type="submit" value="Submit" />
+  <% if (userPredictions.length > 0) { %>
+  <button
+    type="button"
+    class="btn btn-danger btn-sm"
+    data-bs-toggle="modal"
+    data-bs-target="#deleteModal"
+  >
+    Delete Prediction
+  </button>
+  <% } %>
 </div>

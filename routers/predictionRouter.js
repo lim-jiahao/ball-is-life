@@ -106,11 +106,38 @@ const editPrediction = (req, res) => {
     .catch((err) => res.status(500).send(err));
 };
 
+const deletePrediction = (req, res) => {
+  if (!req.isLoggedIn) {
+    res.status(403).redirect('/login');
+    return;
+  }
+
+  const today = moment().tz('Asia/Singapore').subtract(15, 'h');
+
+  if (today.hour() >= 9) {
+    res.render('prediction-fail');
+    return;
+  }
+
+  const { id } = req.params;
+
+  const deleteDetailsQuery = 'DELETE FROM prediction_details WHERE prediction_id = $1';
+  const deletePredictionQuery = 'DELETE FROM predictions WHERE id = $1';
+
+  database
+    .query(deleteDetailsQuery, [id])
+    .then((result) => database.query(deletePredictionQuery, [id]))
+    .then((result) => res.redirect('/'));
+};
+
 router
   .route('/')
   .get(getPredictionForm)
   .post(addNewPrediction);
 
-router.put('/:id', editPrediction);
+router
+  .route('/:id')
+  .put(editPrediction)
+  .delete(deletePrediction);
 
 export default router;
