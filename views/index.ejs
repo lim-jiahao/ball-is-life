@@ -63,10 +63,10 @@
 
     <% if (!hidePredictionButton && games.length > 0) { %>
     <% const time = new Date(timeLeft * 1000).toISOString().substr(11, 8); %>
-    <span id="prediction-timer" class="fw-bold"><span class="text-danger"><%= time %></span> left to make predictions</span>
+    <span id="prediction-timer" class="fw-bold"><span class="text-danger fs-5"><%= time %></span> left to make predictions</span>
     <% } else { %>
     <% const time = new Date(timeToNextPrediction * 1000).toISOString().substr(11, 8); %>
-    <span id="next-pred-timer" class="fw-bold">Enjoy the games :) Predictions for the next day will open in <span class="text-danger"><%= time %></span></span>
+    <span id="next-pred-timer" class="fw-bold">Enjoy the games :) Predictions for the next day will open in <span class="text-danger fs-5"><%= time %></span></span>
     <% } %>
 
     <div class="px-md-5 row mx-0">
@@ -131,7 +131,7 @@
           seconds -= 1;
           if (seconds >= 0) {
             const time = new Date(1000 * seconds).toISOString().substr(11, 8);
-            timerElement1.innerHTML = `<span class="text-danger">${time}</span> left to make predictions`;
+            timerElement1.innerHTML = `<span class="text-danger fs-5">${time}</span> left to make predictions`;
           }
           if (seconds === -1) {
             clearInterval(timer);
@@ -146,7 +146,7 @@
           seconds -= 1;
           if (seconds >= 0) {
             const time = new Date(1000 * seconds).toISOString().substr(11, 8);
-            timerElement2.innerHTML = `Enjoy the games :) Predictions for the next day will open in <span class="text-danger">${time}</span>`;
+            timerElement2.innerHTML = `Enjoy the games :) Predictions for the next day will open in <span class="text-danger fs-5">${time}</span>`;
           }
           if (seconds === -1) {
             clearInterval(timer);

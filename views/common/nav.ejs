@@ -36,6 +36,16 @@
           <% } %>
         </li>
         <li class="nav-item">
+          <a
+            class="nav-link"
+            href="/chat"
+            target="popup"
+            onclick="window.open('/chat','popup','width=600,height=600'); return false;"
+            >Join Chat</a
+          >
+        </li>
+
+        <li class="nav-item">
           <% if (!locals.loggedOut) { %>
           <a class="nav-link" href="/logout">Log Out</a>
           <% } else { %>

@@ -68,8 +68,11 @@
     <% } %> <% comments.forEach((comment, index) => { %>
     <div class="card w-100 mb-4 bg-secondary" style="opacity: 0.9">
       <h6 class="card-header">
-        🙍‍♂️ <a href="/user/<%= comment.user_id %>"><%= comment.username %></a> |
-        <%= comment.created_at %>
+        🙍‍♂️
+        <a class="text-info" href="/user/<%= comment.user_id %>"
+          ><%= comment.username %></a
+        >
+        | <%= comment.created_at %>
       </h6>
       <div class="card-body">
         <p class="card-text"><%= comment.comment %></p>

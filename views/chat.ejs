@@ -1,0 +1,95 @@
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font: 36px Helvetica, Arial;
+        }
+
+        form {
+            background: #000;
+            padding: 3px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+        }
+
+        #send {
+            display: block;
+        }
+
+        #m {
+            border: 0;
+            padding: 10px;
+            width: 90%;
+            margin-right: .5%;
+            text-align: justify;
+        }
+
+        form button {
+            width: 100%;
+            background: rgb(130, 224, 255);
+            border: none;
+            padding: 10px;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            margin-bottom: 40px;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+        }
+
+        #messages li:nth-child(odd) {
+            background: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="messages-container">
+        <ul id="messages"></ul>
+    </div>
+        <form action="">
+            <input id="m" autocomplete="off" placeholder='Type here...' />
+            <div id="send"><button>Send</button></div>
+        </form>
+
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js" integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+
+        $(() => {
+            const socket = io();
+
+            // submitting your chat msg
+            $('form').submit(() => {
+                const user = "<%= user.userName %>"
+                socket.emit('chat', [$('#m').val(), user])
+                $('#m').val('');
+                return false;
+            });
+
+            // receiving others chat msgs
+            socket.on('chatMessage', ((data) => {
+                let msg = data[0]
+                let username = data[1]
+                $('#messages').append($('<li>').text(username + ': ' + msg));
+            }));
+        })
+
+
+    </script>
+
+</body>
+
+</html>
