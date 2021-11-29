@@ -10,9 +10,8 @@ const getLoginPage = (req, res) => {
 };
 
 const authUser = (req, res) => {
-  const values = [req.body.email];
   database
-    .query('SELECT * from users WHERE email=$1', values)
+    .query('SELECT * from users WHERE username=$1', [req.body.username])
     .then((result) => {
       if (result.rows.length === 0) {
         res.status(403).redirect('/login');
