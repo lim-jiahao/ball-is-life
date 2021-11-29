@@ -61,14 +61,25 @@
             class="text-light"
             style="text-decoration: none"
           >
-            <h5 class="card-header"><%= `Game ${index + 1}` %></h5>
             <div class="card-body">
-              <p class="card-text">
-                <%= `${game.home_team.full_name} ${game.home_team_score}` %>
-              </p>
-              <p class="card-text">
-                <%= `${game.visitor_team.full_name} ${game.visitor_team_score}` %>
-              </p>
+              <div class="d-flex mb-2 align-items-center justify-content-evenly">
+              <img src="../images/<%= game.visitor_team.abbreviation %>.png" style="width: 40px">
+              <span class="card-text">
+                <%= game.visitor_team.full_name %>
+              </span>
+              <span class="card-text">
+                <%= game.visitor_team_score %>
+              </span>
+              </div>
+              <div class="d-flex mb-2 align-items-center justify-content-evenly">
+              <img src="../images/<%= game.home_team.abbreviation %>.png" style="width: 40px">
+              <span class="card-text">
+                <%= game.home_team.full_name %>
+              </span>
+              <span class="card-text">
+                <%= game.home_team_score %>
+              </span>
+              </div>
               <span class="card-text fw-bold"
                 ><%= game.status.toUpperCase() %></span
               >
@@ -76,7 +87,7 @@
             </div>
           </a>
           <div class="card-footer">
-            <% const ytLink = `https://www.youtube.com/results?search_query=${game.home_team.name}+${game.visitor_team.name}+${date[1]}`; %>
+            <% const ytLink = `https://www.youtube.com/results?search_query=${game.visitor_team.name}+${game.home_team.name}+${date[1]}`; %>
             <a href="<%= ytLink %>" target="_blank" class="card-link text-info">Highlights</a>
           </div>
         </div>

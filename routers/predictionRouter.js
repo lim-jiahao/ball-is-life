@@ -21,7 +21,7 @@ const getPredictionForm = (req, res) => {
   const todayFormatted = today.format('dddd, MMMM Do, YYYY');
   let games;
 
-  const selectQuery = 'SELECT g.*, t1.name AS home_team, t2.name AS away_team FROM games AS g INNER JOIN teams as t1 ON g.home_team_id = t1.id INNER JOIN teams as t2 ON g.away_team_id = t2.id WHERE date_col = $1 ORDER BY id';
+  const selectQuery = 'SELECT g.*, t1.name AS home_team, t1.abbreviation AS home_team_abbrev, t2.name AS away_team, t2.abbreviation AS away_team_abbrev FROM games AS g INNER JOIN teams as t1 ON g.home_team_id = t1.id INNER JOIN teams as t2 ON g.away_team_id = t2.id WHERE date_col = $1 ORDER BY id';
   const userPredictionQuery = 'SELECT * FROM predictions p INNER JOIN prediction_details pd ON p.id = pd.prediction_id WHERE user_id = $1 AND date_col = $2';
 
   database

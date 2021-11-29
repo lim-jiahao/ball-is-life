@@ -13,41 +13,56 @@
   </head>
   <body class="text-center bg-dark text-light">
     <%- include('common/nav') %>
-    <div class="px-md-5 d-flex align-items-baseline justify-content-center" style="margin-top: 70px">
+    <div
+      class="px-md-5 d-flex align-items-baseline justify-content-center"
+      style="margin-top: 70px"
+    >
       <span class="me-2 fw-bold"><%= date[0] %></span>
     </div>
-    
+
     <div class="px-md-5 row mx-0">
-      <% if (games.length > 0) { %> 
-        <% games.forEach((game, index) => { %>
-        <div class="card g-0 col-6 col-md-3 mb-4 text-light bg-secondary <%= game.time ? "bg-success" : "" %>">
-          <a
-            href="/game/<%= game.id %>"
-            class="text-light"
-            style="text-decoration: none"
-          >
-            <h5 class="card-header"><%= `Game ${index + 1}` %></h5>
-            <div class="card-body">
-              <p class="card-text">
-                <%= `${game.home_team.full_name} ${game.home_team_score}` %>
-              </p>
-              <p class="card-text">
-                <%= `${game.visitor_team.full_name} ${game.visitor_team_score}` %>
-              </p>
-              <span class="card-text fw-bold"
-                ><%= game.status.toUpperCase() %></span
-              >
-              <span class="card-text fw-bold"><%= game.time %></span>
-            </div>
-          </a>
-          <div class="card-footer">
-            <% const ytLink = `https://www.youtube.com/results?search_query=${game.home_team.name}+${game.visitor_team.name}+${date[1]}`; %>
-            <a href="<%= ytLink %>" target="_blank" class="card-link text-info">Highlights</a>
+      <% if (games.length > 0) { %> <% games.forEach((game, index) => { %> <div
+      class="card g-0 col-6 col-md-3 mb-4 text-light bg-secondary <%= game.time
+      ? "bg-success" : "" %>">
+      <a
+        href="/game/<%= game.id %>"
+        class="text-light"
+        style="text-decoration: none"
+      >
+        <div class="card-body">
+          <div class="d-flex mb-2 align-items-center justify-content-evenly">
+            <img
+              src="../images/<%= game.visitor_team.abbreviation %>.png"
+              style="width: 40px"
+            />
+            <span class="card-text"> <%= game.visitor_team.full_name %> </span>
+            <span class="card-text"> <%= game.visitor_team_score %> </span>
           </div>
+          <div class="d-flex mb-2 align-items-center justify-content-evenly">
+            <img
+              src="../images/<%= game.home_team.abbreviation %>.png"
+              style="width: 40px"
+            />
+            <span class="card-text"> <%= game.home_team.full_name %> </span>
+            <span class="card-text"> <%= game.home_team_score %> </span>
+          </div>
+          <span class="card-text fw-bold"
+            ><%= game.status.toUpperCase() %></span
+          >
+          <span class="card-text fw-bold"><%= game.time %></span>
         </div>
-        <% }) %>
-      <% } else { %>
-        <p class="mt-4">No games today! Please check back again soon.</p>
+      </a>
+      <div class="card-footer">
+        <% const ytLink =
+        `https://www.youtube.com/results?search_query=${game.visitor_team.name}+${game.home_team.name}+${date[1]}`;
+        %>
+        <a href="<%= ytLink %>" target="_blank" class="card-link text-info"
+          >Highlights</a
+        >
+      </div>
+      </div>
+      <% }) %> <% } else { %>
+      <p class="mt-4">No games today! Please check back again soon.</p>
       <% } %>
     </div>
 
