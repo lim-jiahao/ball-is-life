@@ -22,6 +22,7 @@ const getGames = (req, res) => {
 
   let timeLeft;
   let timeToNextPrediction;
+  let userPredictions;
 
   axios
     .get(`https://www.balldontlie.io/api/v1/games?start_date=${todayDate}&end_date=${todayDate}`)
@@ -41,10 +42,20 @@ const getGames = (req, res) => {
       return database.query(userPredictionQuery, [req.cookies.userID, todayDate]);
     })
     .then((result) => {
+      userPredictions = result.rows;
+      const allDatesQuery = 'SELECT DISTINCT date_col FROM games ORDER BY date_col DESC';
+      return database.query(allDatesQuery);
+    })
+    .then((result) => {
+      const allDates = result.rows.map((date) => ({
+        short: moment(date.date_col).format('YYYY-MM-DD'),
+        long: moment(date.date_col).format('dddd, MMMM Do, YYYY'),
+      }));
       res.render('index', {
         date: [todayFormatted, todaySearch],
         games,
-        userPredictions: result.rows,
+        allDates,
+        userPredictions,
         user: req.cookies,
         hidePredictionButton,
         timeLeft,

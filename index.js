@@ -10,6 +10,7 @@ import predictionRouter from './routers/predictionRouter.js';
 import leaderboardRouter from './routers/leaderboardRouter.js';
 import gameRouter from './routers/gameRouter.js';
 import userRouter from './routers/userRouter.js';
+import dayRouter from './routers/dayRouter.js';
 import scheduler from './utils/schedule.js';
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.use('/prediction', predictionRouter);
 app.use('/leaderboard', leaderboardRouter);
 app.use('/game', gameRouter);
 app.use('/user', userRouter);
+app.use('/day', dayRouter);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

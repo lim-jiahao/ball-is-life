@@ -32,6 +32,17 @@
         </form>
       <% } %>
     </div>
+    
+    <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    Go to
+  </button>
+  <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;" aria-labelledby="dropdownMenuButton1">
+    <% allDates.forEach((date) => { %>
+      <li><a class="dropdown-item" href="/day/<%= date.short %>"><%= date.long %></a></li>
+    <% }) %>
+  </ul>
+</div>
 
     <% if (!hidePredictionButton && games.length > 0) { %>
     <% const time = new Date(timeLeft * 1000).toISOString().substr(11, 8); %>
@@ -44,7 +55,7 @@
     <div class="px-md-5 row mx-0">
       <% if (games.length > 0) { %> 
         <% games.forEach((game, index) => { %>
-        <div class="card g-0 col-4 mb-4 text-light bg-secondary <%= game.time ? "bg-success" : "" %>">
+        <div class="card g-0 col-6 col-md-3 mb-4 text-light bg-secondary <%= game.time ? "bg-success" : "" %>">
           <a
             href="/game/<%= game.id %>"
             class="text-light"
