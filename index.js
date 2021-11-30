@@ -40,8 +40,12 @@ app.use('/day', dayRouter);
 app.use('/chat', chatRouter);
 
 io.on('connection', (socket) => {
-  const chatRoom = 'default';
-  socket.join(chatRoom);
+  let chatRoom = 'default';
+
+  socket.on('subscribe', (room) => {
+    chatRoom = room;
+    socket.join(room);
+  });
 
   socket.on('chat', (data) => {
     let username = data[1];

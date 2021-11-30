@@ -7,7 +7,7 @@
         }
 
         body {
-            font: 36px Helvetica, Arial;
+            font: 20px Helvetica, Arial;
         }
 
         form {
@@ -52,10 +52,18 @@
         #messages li:nth-child(odd) {
             background: #eee;
         }
+
+        h3 {
+            font-size: 24px;
+            color: crimson;
+            font-style: italic;
+            margin-left: 25px;
+        }
     </style>
 </head>
 
 <body>
+    <h3 id='roomName'></h3>
     <div id="messages-container">
         <ul id="messages"></ul>
     </div>
@@ -70,6 +78,10 @@
 
         $(() => {
             const socket = io();
+
+            const id = "<%= id %>";
+            socket.emit('subscribe', id);
+            $('#roomName').html(`You are now in room: ${id}`);
 
             // submitting your chat msg
             $('form').submit(() => {

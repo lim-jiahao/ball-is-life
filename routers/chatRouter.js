@@ -10,9 +10,10 @@ const showChatWindow = (req, res) => {
     return;
   }
 
-  res.render('chat', { user: req.cookies });
+  const { id } = req.params;
+  res.render('chat', { id, user: req.cookies });
 };
 
-router.get('/', showChatWindow);
+router.get('/:id', showChatWindow);
 
 export default router;

@@ -61,6 +61,13 @@
         <a href="<%= ytLink %>" target="_blank" class="card-link text-info"
           >Highlights</a
         >
+        <a
+          href="/chat/<%= game.id %>"
+          target="popup"
+          class="card-link text-info"
+          onclick="window.open('/chat/<%= game.id %>','popup','width=600,height=600'); return false;"
+          >Join Chat</a
+        >
       </div>
     </div>
     <% if (comments.length > 0) { %>
