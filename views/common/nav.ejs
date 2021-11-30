@@ -15,7 +15,7 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <% if (locals.page === '/') { %>
+          <% if (locals.user?.userName) { %> <% if (locals.page === '/') { %>
           <a class="nav-link active fw-bold" aria-current="page" href="/"
             >Home</a
           >
@@ -44,15 +44,25 @@
             >Join Chat</a
           >
         </li>
+        <% } %>
+        <li class="nav-item">
+          <% if (locals.page === '/about') { %>
+          <a class="nav-link active fw-bold" aria-current="page" href="/about"
+            >About</a
+          >
+          <% } else { %>
+          <a class="nav-link" href="/about">About</a>
+          <% } %>
+        </li>
 
         <li class="nav-item">
-          <% if (!locals.loggedOut) { %>
+          <% if (locals.user?.userName) { %>
           <a class="nav-link" href="/logout">Log Out</a>
           <% } else { %>
           <a class="nav-link" href="/login">Log In</a>
           <% } %>
         </li>
-        <% if (locals.user) { %>
+        <% if (locals.user?.userName) { %>
         <li class="nav-item">
           <a href="/user/<%= locals.user.userID %> " class="nav-link text-dark"
             >🙍‍♂️ <%= locals.user.userName %></a

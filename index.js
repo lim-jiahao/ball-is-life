@@ -14,6 +14,7 @@ import gameRouter from './routers/gameRouter.js';
 import userRouter from './routers/userRouter.js';
 import dayRouter from './routers/dayRouter.js';
 import chatRouter from './routers/chatRouter.js';
+import aboutRouter from './routers/aboutRouter.js';
 import scheduler from './utils/schedule.js';
 
 dotenv.config();
@@ -38,6 +39,7 @@ app.use('/game', gameRouter);
 app.use('/user', userRouter);
 app.use('/day', dayRouter);
 app.use('/chat', chatRouter);
+app.use('/about', aboutRouter);
 
 io.on('connection', (socket) => {
   let chatRoom = 'default';

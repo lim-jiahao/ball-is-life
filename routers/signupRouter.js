@@ -5,7 +5,7 @@ import { getUserIdHash, getPasswordHash } from '../utils/hash.js';
 const router = express.Router();
 
 const getSignupPage = (req, res) => {
-  if (!req.cookies.loggedIn) res.render('login-signup', { page: '/signup', loggedOut: true });
+  if (!req.cookies.loggedIn) res.render('login-signup', { page: '/signup' });
   else res.redirect('/');
 };
 

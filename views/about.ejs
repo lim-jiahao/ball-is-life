@@ -39,7 +39,7 @@
       text-light
     "
   >
-    <%- include('common/nav') %>
+    <%- include('common/nav', { page: '/about' } ) %>
     <div class="px-md-5 mb-4 fs-5 text-center" style="margin-top: 70px">
       <i
         >When I find myself in times of trouble, Mother Mary comes to me
@@ -48,39 +48,32 @@
         >"</i
       >
     </div>
-    <div class="card bg-secondary mb-3" style="opacity: 0.9">
-      <h6 class="card-header">
-        <%= locals.page === '/login' ? 'Login' : 'Signup' %>
-      </h6>
+    <div class="card bg-secondary mx-md-5 mb-3" style="opacity: 0.9">
+      <h6 class="card-header">What is Ball is Life?</h6>
       <div class="card-body">
-        <form action="<%= locals.page %>" method="POST">
-          <% if (locals.page === '/signup') { %>
-          <div class="mb-1">
-            <label for="email">Email:</label><br />
-            <input type="email" name="email" required />
-          </div>
-          <% } %>
-          <div class="mb-1">
-            <label for="username">User Name:</label><br />
-            <input type="text" name="username" required />
-          </div>
-          <div class="mb-1">
-            <label for="password">Password:</label><br />
-            <input type="password" name="password" required />
-          </div>
-          <input type="submit" value="Submit" />
-        </form>
-        <% if (locals.page === '/login') { %>
-        <p style="font-size: 11px">
-          New to Ball is Life?
-          <a class="fw-bold text-info" href="/signup">Sign up</a> now!
+        <p>
+          <strong>Ball is Life</strong> is a community for NBA fans to stay
+          updated on the latest and follow games live, while pitting against
+          each other to see who's the best at predicting game outcomes.
         </p>
-        <% } else { %>
-        <p style="font-size: 11px">
-          Already have an account?
-          <a class="fw-bold text-info" href="/login">Log in</a> now!
+
+        <p>
+          Everyday at 3pm SGT, users can submit predictions for the next day's
+          games. Predictions will close at 12am SGT.
         </p>
-        <% } %>
+
+        <p>
+          The next day at 3pm after the games have been played, predictions will
+          be tallied and the leaderboard updated. Become the top predictor!
+        </p>
+
+        <p>
+          Game threads lets you stay close to the action and post instant
+          reactions to whatever is happening. Not good enough? Join the live
+          chat to interact real-time with other fans watching the game!
+        </p>
+
+        <p>Sign up today to be a part of the Ball is Life philosophy!</p>
       </div>
     </div>
 
