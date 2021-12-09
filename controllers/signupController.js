@@ -7,7 +7,7 @@ const initSignupController = () => {
     else res.redirect('/');
   };
 
-  const createNewUser = (req, res) => {
+  const createNewUser = async (req, res) => {
     const hashedPassword = getPasswordHash(req.body.password);
 
     const args = Object.values(req.body);
@@ -16,19 +16,15 @@ const initSignupController = () => {
     args.push(new Date());
     const sqlQuery = 'INSERT INTO users (email, username, password, created_at) VALUES ($1, $2, $3, $4) RETURNING *';
 
-    database
-      .query(sqlQuery, args)
-      .then((result) => {
-        const user = result.rows[0];
-        const hash = getUserIdHash(user.id);
-        res.cookie('userName', user.username);
-        res.cookie('userID', user.id);
-        res.cookie('loggedIn', hash);
-        res.redirect('/');
-      })
-      .catch((err) => {
-        res.status(500).send(err);
-      });
+    try {
+      const result = await database.query(sqlQuery, args);
+      const user = result.rows[0];
+      const hash = getUserIdHash(user.id);
+      res.cookie('userName', user.username);
+      res.cookie('userID', user.id);
+      res.cookie('loggedIn', hash);
+      res.redirect('/');
+    } catch (err) { res.status(500).send(err); }
   };
 
   return { getSignupPage, createNewUser };

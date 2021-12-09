@@ -3,32 +3,30 @@ import moment from 'moment-timezone';
 import database from '../database/database.js';
 
 const initGamesController = () => {
-  const getGameById = (req, res) => {
+  const getGameById = async (req, res) => {
     if (!req.isLoggedIn) {
       res.status(403).redirect('/login');
       return;
     }
 
     const { id } = req.params;
-    let game;
-    let date;
-    axios
-      .get(`https://www.balldontlie.io/api/v1/games/${id}`)
-      .then((resp) => {
-        game = resp.data;
-        const gameDate = moment(new Date(game.date));
-        game.date = gameDate.format('dddd, MMMM Do, YYYY');
-        date = gameDate.format('MMMM Do YYYY');
-        const commentQuery = 'SELECT c.*, u.username FROM comments AS c INNER JOIN users AS u on c.user_id = u.id WHERE c.game_id = $1 ORDER BY c.id';
-        return database.query(commentQuery, [id]);
-      })
-      .then((result) => { res.render('game', {
+
+    try {
+      const resp = await axios.get(`https://www.balldontlie.io/api/v1/games/${id}`);
+      const game = resp.data;
+      const gameDate = moment(new Date(game.date));
+      game.date = gameDate.format('dddd, MMMM Do, YYYY');
+      const date = gameDate.format('MMMM Do YYYY');
+
+      const commentQuery = 'SELECT c.*, u.username FROM comments AS c INNER JOIN users AS u on c.user_id = u.id WHERE c.game_id = $1 ORDER BY c.id';
+      const result = await database.query(commentQuery, [id]);
+      res.render('game', {
         game, date, comments: result.rows, user: req.cookies,
-      }); })
-      .catch((err) => { res.status(500).send(err); });
+      });
+    } catch (err) { res.status(500).send(err); }
   };
 
-  const addComment = (req, res) => {
+  const addComment = async (req, res) => {
     if (!req.isLoggedIn) {
       res.status(403).redirect('/login');
       return;
@@ -42,15 +40,13 @@ const initGamesController = () => {
                           (SELECT id FROM users WHERE username = $2),
                           $3, $4)`;
 
-    database
-      .query(sqlQuery, args)
-      .then((result) => {
-        res.redirect(`/game/${id}`);
-      })
-      .catch((err) => { res.status(500).send(err); });
+    try {
+      await database.query(sqlQuery, args);
+      res.redirect(`/game/${id}`);
+    } catch (err) { res.status(500).send(err); }
   };
 
-  const editComment = (req, res) => {
+  const editComment = async (req, res) => {
     if (!req.isLoggedIn) {
       res.status(403).redirect('/login');
       return;
@@ -59,13 +55,14 @@ const initGamesController = () => {
     const { id, commentId } = req.params;
 
     const editQuery = 'UPDATE comments SET comment = $1 WHERE id = $2';
-    database
-      .query(editQuery, [req.body.comment, commentId])
-      .then((result) => { res.redirect(`/game/${id}`); })
-      .catch((err) => res.status(500).send(err));
+
+    try {
+      await database.query(editQuery, [req.body.comment, commentId]);
+      res.redirect(`/game/${id}`);
+    } catch (err) { res.status(500).send(err); }
   };
 
-  const deleteComment = (req, res) => {
+  const deleteComment = async (req, res) => {
     if (!req.isLoggedIn) {
       res.status(403).redirect('/login');
       return;
@@ -74,10 +71,11 @@ const initGamesController = () => {
     const { id, commentId } = req.params;
 
     const deleteQuery = 'DELETE FROM comments WHERE id = $1';
-    database
-      .query(deleteQuery, [commentId])
-      .then((result) => { res.redirect(`/game/${id}`); })
-      .catch((err) => res.status(500).send(err));
+
+    try {
+      await database.query(deleteQuery, [commentId]);
+      res.redirect(`/game/${id}`);
+    } catch (err) { res.status(500).send(err); }
   };
 
   return {
