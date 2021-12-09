@@ -3,11 +3,6 @@ import database from '../database/database.js';
 
 const initPredictionsController = () => {
   const getPredictionForm = async (req, res) => {
-    if (!req.isLoggedIn) {
-      res.status(403).redirect('/login');
-      return;
-    }
-
     const today = moment().tz('Asia/Singapore').subtract(15, 'h');
     if (today.hour() >= 9) {
       res.render('prediction-fail');
@@ -31,11 +26,6 @@ const initPredictionsController = () => {
   };
 
   const addNewPrediction = async (req, res) => {
-    if (!req.isLoggedIn) {
-      res.status(403).redirect('/login');
-      return;
-    }
-
     const today = moment().tz('Asia/Singapore').subtract(15, 'h');
     const todayDate = today.format('YYYY-MM-DD');
 
@@ -64,11 +54,6 @@ const initPredictionsController = () => {
   };
 
   const editPrediction = async (req, res) => {
-    if (!req.isLoggedIn) {
-      res.status(403).redirect('/login');
-      return;
-    }
-
     const today = moment().tz('Asia/Singapore').subtract(15, 'h');
 
     if (today.hour() >= 9) {
@@ -94,11 +79,6 @@ const initPredictionsController = () => {
   };
 
   const deletePrediction = async (req, res) => {
-    if (!req.isLoggedIn) {
-      res.status(403).redirect('/login');
-      return;
-    }
-
     const today = moment().tz('Asia/Singapore').subtract(15, 'h');
 
     if (today.hour() >= 9) {

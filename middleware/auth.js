@@ -11,6 +11,10 @@ const checkAuth = (req, res, next) => {
     }
   }
 
+  if (!req.isLoggedIn) {
+    res.status(403).redirect('/login');
+    return;
+  }
   next();
 };
 

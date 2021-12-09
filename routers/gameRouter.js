@@ -1,9 +1,7 @@
 import express from 'express';
-import checkAuth from '../middleware/auth.js';
 import initGamesController from '../controllers/gamesController.js';
 
 const router = express.Router();
-router.use(checkAuth);
 
 const GamesController = initGamesController();
 

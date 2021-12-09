@@ -2,11 +2,6 @@ import database from '../database/database.js';
 
 const initUsersController = () => {
   const getUserById = async (req, res) => {
-    if (!req.isLoggedIn) {
-      res.status(403).redirect('/login');
-      return;
-    }
-
     const { id } = req.params;
     const userQuery = 'SELECT id, username, bio FROM users WHERE id = $1';
     const predictionQuery = 'SELECT pd.pick_id, pd.is_correct, g.*, ht.name AS home_team, at.name AS away_team FROM predictions p INNER JOIN prediction_details pd ON p.id = pd.prediction_id INNER JOIN games g ON pd.game_id = g.id INNER JOIN teams ht ON ht.id = g.home_team_id INNER JOIN teams at ON at.id = g.away_team_id WHERE p.user_id = $1 AND is_correct != -1';
@@ -34,11 +29,6 @@ const initUsersController = () => {
   };
 
   const editUserBio = async (req, res) => {
-    if (!req.isLoggedIn) {
-      res.status(403).redirect('/login');
-      return;
-    }
-
     const { id } = req.params;
 
     const editQuery = 'UPDATE users SET bio = $1 WHERE id = $2';

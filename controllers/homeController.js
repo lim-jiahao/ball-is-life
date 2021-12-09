@@ -4,11 +4,6 @@ import database from '../database/database.js';
 
 const initHomeController = () => {
   const getGames = async (req, res) => {
-    if (!req.isLoggedIn) {
-      res.status(403).redirect('/login');
-      return;
-    }
-
     let games;
     const today = moment().tz('Asia/Singapore').subtract(15, 'h');
     const todayDate = today.format('YYYY-MM-DD');

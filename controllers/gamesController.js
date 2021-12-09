@@ -4,11 +4,6 @@ import database from '../database/database.js';
 
 const initGamesController = () => {
   const getGameById = async (req, res) => {
-    if (!req.isLoggedIn) {
-      res.status(403).redirect('/login');
-      return;
-    }
-
     const { id } = req.params;
 
     try {
@@ -27,11 +22,6 @@ const initGamesController = () => {
   };
 
   const addComment = async (req, res) => {
-    if (!req.isLoggedIn) {
-      res.status(403).redirect('/login');
-      return;
-    }
-
     const { id } = req.params;
     const args = [req.body.comment, req.cookies.userName, id, new Date()];
 
@@ -47,11 +37,6 @@ const initGamesController = () => {
   };
 
   const editComment = async (req, res) => {
-    if (!req.isLoggedIn) {
-      res.status(403).redirect('/login');
-      return;
-    }
-
     const { id, commentId } = req.params;
 
     const editQuery = 'UPDATE comments SET comment = $1 WHERE id = $2';
@@ -63,11 +48,6 @@ const initGamesController = () => {
   };
 
   const deleteComment = async (req, res) => {
-    if (!req.isLoggedIn) {
-      res.status(403).redirect('/login');
-      return;
-    }
-
     const { id, commentId } = req.params;
 
     const deleteQuery = 'DELETE FROM comments WHERE id = $1';

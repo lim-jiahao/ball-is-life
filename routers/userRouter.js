@@ -1,9 +1,7 @@
 import express from 'express';
-import checkAuth from '../middleware/auth.js';
 import initUsersController from '../controllers/usersController.js';
 
 const router = express.Router();
-router.use(checkAuth);
 
 const UsersController = initUsersController();
 
