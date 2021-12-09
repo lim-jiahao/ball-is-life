@@ -4,8 +4,9 @@ import methodOverride from 'method-override';
 import dotenv from 'dotenv';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import bindRoutes from './routes.js';
+import bindRoutes from './utils/routes.js';
 import scheduler from './utils/schedule.js';
+import initialiseChatSockets from './utils/chat.js';
 
 dotenv.config();
 const PORT = process.env.PORT ?? 3004;
@@ -17,29 +18,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
 const httpServer = createServer(app);
+
 const io = new Server(httpServer);
+initialiseChatSockets(io);
 
 bindRoutes(app);
-
-io.on('connection', (socket) => {
-  let chatRoom = 'default';
-
-  socket.on('subscribe', (room) => {
-    chatRoom = room;
-    socket.join(room);
-  });
-
-  socket.on('chat', (data) => {
-    let username = data[1];
-    if (username === '') {
-      username = 'Unknown User';
-    }
-    const msg = data[0];
-    io.to(chatRoom).emit('chatMessage', [msg, username]);
-  });
-
-  socket.on('disconnect', () => {});
-});
 
 httpServer.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
